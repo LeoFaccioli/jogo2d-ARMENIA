@@ -8,7 +8,7 @@
 void tela_inicial(ALLEGRO_DISPLAY* tela, ALLEGRO_FONT* font, ALLEGRO_BITMAP* area_central) {
 
     al_set_target_bitmap(al_get_backbuffer(tela));
-    al_draw_text(font, al_map_rgb(255, 255, 255), 270, 70, 80, "Título do Jogo");
+    al_draw_text(font, al_map_rgb(255, 255, 255), 270, 70, 80, "Tï¿½tulo do Jogo");
     al_draw_bitmap(area_central, 150, 200, 0);
     al_draw_text(font, al_map_rgb(0, 0, 0), 295, 225, 80, "Iniciar");
     al_draw_bitmap(area_central, 150, 280, 0);
@@ -31,7 +31,7 @@ void movimentacao(ALLEGRO_EVENT evento, int pos_x, int pos_y) {
 }
 
 int main() {
-    // INICIAÇÃO
+    // INICIAï¿½ï¿½O
     al_init();
     al_init_font_addon();
     al_init_image_addon();
@@ -53,7 +53,7 @@ int main() {
     const int ALTURA_TELA = 480;
     ALLEGRO_DISPLAY* tela = al_create_display(LARGURA_TELA, ALTURA_TELA); // Cria um display com um tamanho especificado w, h
     al_set_system_mouse_cursor(tela, ALLEGRO_SYSTEM_MOUSE_CURSOR_DEFAULT);
-    ALLEGRO_FONT* font = al_create_builtin_font(); // Adiciona uma fonte, nesse caso a padrão.
+    ALLEGRO_FONT* font = al_create_builtin_font(); // Adiciona uma fonte, nesse caso a padrï¿½o.
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0); // FPS
     ALLEGRO_BITMAP* fantasma = al_load_bitmap("./fantasma.bmp");
     ALLEGRO_BITMAP* coracao = al_load_bitmap("./coracao.png");
@@ -125,7 +125,7 @@ int main() {
             al_draw_bitmap(cenarioRadio, 0, 0, 0);
             al_draw_bitmap(fantasma, pos_x, pos_y, 0);
 
-            if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+            if (evento.type != ALLEGRO_EVENT_KEY_DOWN) {
                 if (evento.keyboard.keycode == ALLEGRO_KEY_RIGHT) pos_x += 10;
                 else if (evento.keyboard.keycode == ALLEGRO_KEY_LEFT) pos_x -= 10;
                 else if (evento.keyboard.keycode == ALLEGRO_KEY_UP) pos_y -= 10;
@@ -157,7 +157,7 @@ int main() {
             al_draw_bitmap(cenarioFora, 0, 0, 0);
             al_draw_bitmap(fantasma, pos_x, pos_y, 0);
 
-            if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+            if (evento.type != ALLEGRO_EVENT_KEY_DOWN) {
                 if (evento.keyboard.keycode == ALLEGRO_KEY_RIGHT) pos_x += 10;
                 else if (evento.keyboard.keycode == ALLEGRO_KEY_LEFT) pos_x -= 10;
                 else if (evento.keyboard.keycode == ALLEGRO_KEY_UP) pos_y -= 10;
@@ -184,7 +184,7 @@ int main() {
                     }
                 }
             }
-           
+
             //Entrar para baixo                                                    480 - 50
             if (pos_x < LARGURA_TELA - 300 && pos_x > LARGURA_TELA - 350 && pos_y > ALTURA_TELA - 90)
             {
@@ -209,7 +209,9 @@ int main() {
                         estadoatual = 6;
                     }
                 }
+                break;
             }
+
 
             //Entrar para a esquerda
             if (pos_x < LARGURA_TELA - 540 && pos_y < ALTURA_TELA - 250 && pos_y > ALTURA_TELA - 300)
@@ -231,7 +233,7 @@ int main() {
             al_draw_bitmap(cenarioDormitorio, 0, 0, 0);
             al_draw_bitmap(fantasma, pos_x, pos_y, 0);
 
-            if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+            if (evento.type != ALLEGRO_EVENT_KEY_DOWN) {
                 if (evento.keyboard.keycode == ALLEGRO_KEY_RIGHT) pos_x += 10;
                 else if (evento.keyboard.keycode == ALLEGRO_KEY_LEFT) pos_x -= 10;
                 else if (evento.keyboard.keycode == ALLEGRO_KEY_UP) pos_y -= 10;
@@ -260,7 +262,7 @@ int main() {
             al_draw_bitmap(cenarioBar, 0, 0, 0);
             al_draw_bitmap(fantasma, pos_x, pos_y, 0);
 
-            if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+            if (evento.type != ALLEGRO_EVENT_KEY_DOWN) {
                 if (evento.keyboard.keycode == ALLEGRO_KEY_RIGHT) pos_x += 10;
                 else if (evento.keyboard.keycode == ALLEGRO_KEY_LEFT) pos_x -= 10;
                 else if (evento.keyboard.keycode == ALLEGRO_KEY_UP) pos_y -= 10;
@@ -289,7 +291,7 @@ int main() {
         case 6: //ESCRITORIO
             al_draw_bitmap(cenarioEscritorio, 0, 0, 0);
             al_draw_bitmap(fantasma, pos_x, pos_y, 0);
-            if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+            if (evento.type != ALLEGRO_EVENT_KEY_DOWN) {
                 if (evento.keyboard.keycode == ALLEGRO_KEY_RIGHT) pos_x += 10;
                 else if (evento.keyboard.keycode == ALLEGRO_KEY_LEFT) pos_x -= 10;
                 else if (evento.keyboard.keycode == ALLEGRO_KEY_UP) pos_y -= 10;
@@ -328,6 +330,17 @@ int main() {
                 }
             }
 
+            if (pos_x > LARGURA_TELA - 90 && pos_y < ALTURA_TELA - 250 && pos_y > ALTURA_TELA - 300)
+            {
+                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
+                if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+                    if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
+                        al_clear_to_color(al_map_rgb(0, 0, 0));
+                        pos_x = -50; pos_y = ALTURA_TELA / 2 - 50;
+                        estadoatual = 8;
+                    }
+                }
+            }
 
             break;
 
@@ -337,7 +350,7 @@ int main() {
             al_draw_bitmap(cenarioGaragem, 0, 0, 0);
             al_draw_bitmap(fantasma, pos_x, pos_y, 0);
 
-            if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+            if (evento.type != ALLEGRO_EVENT_KEY_DOWN) {
                 if (evento.keyboard.keycode == ALLEGRO_KEY_RIGHT) pos_x += 10;
                 else if (evento.keyboard.keycode == ALLEGRO_KEY_LEFT) pos_x -= 10;
                 else if (evento.keyboard.keycode == ALLEGRO_KEY_UP) pos_y -= 10;
@@ -368,7 +381,13 @@ int main() {
 
             break;
 
+        case 8:
             
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+            al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "Fim!");
+
+
+            break;
         }
 
 
@@ -377,8 +396,8 @@ int main() {
 
 
 
-        // Colorimos o bitmap correspondente ao retângulo central,
-        // com a cor condicionada ao conteúdo da flag na_area_central
+        // Colorimos o bitmap correspondente ao retï¿½ngulo central,
+        // com a cor condicionada ao conteï¿½do da flag na_area_central
         /*
         al_clear_to_color(al_map_rgb(0, 0, 0));
         al_set_target_bitmap(area_central);
