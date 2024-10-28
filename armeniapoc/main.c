@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/keyboard.h>
+#define ALLEGRO_BPS_TO_SECS(x) (1.0 / (x))
 
 void tela_inicial(ALLEGRO_DISPLAY* tela, ALLEGRO_FONT* font, ALLEGRO_BITMAP* area_central) {
 
@@ -76,7 +77,6 @@ int main() {
     al_register_event_source(lista_eventos, al_get_keyboard_event_source());
     al_register_event_source(lista_eventos, al_get_mouse_event_source());
     al_start_timer(timer); // Precisa dela para registrar os eventos
-
     float frame = 0.f;
     int pos_x = 100, pos_y = 100;
     int na_area_central = 0;
@@ -111,14 +111,24 @@ int main() {
                 int mouseY = evento.mouse.y;
 
                 if (mouseX >= 220 && mouseX <= 420 && mouseY >= 220 && mouseY <= 300)
-                    estadoatual = 2;
+                    estadoatual = 1;
                 if (mouseX >= 220 && mouseX <= 420 && mouseY >= 270 && mouseY <= 350) {
                     jogando = false;
                 }
             }
 
             break;
-        case 1:
+        case 1://Puzzle 1
+            al_clear_to_color(al_map_rgb(0, 0, 0));
+            al_draw_text(font, al_map_rgb(255, 255, 255), 100, 230, 0, "Vamos fazer um teste para ver se vc é capaz de entrar para"); 
+            al_draw_text(font, al_map_rgb(255, 255, 255), 110, 240, 0, " para a nossa facilidade e ajudar com a nossa pesquisa.");
+            printf("%d\n", timer);
+            
+            if (timer >= 9999999999999) {
+                al_stop_timer(timer);
+                al_clear_to_color(al_map_rgb(0, 0, 0));
+            }
+                
             break;
         case 2: //RADIO
 
@@ -382,7 +392,7 @@ int main() {
             break;
 
         case 8:
-            
+
             al_clear_to_color(al_map_rgb(0, 0, 0));
             al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "Fim!");
 
@@ -429,6 +439,7 @@ int main() {
     al_destroy_bitmap(cenarioGaragem);
     al_destroy_bitmap(cenarioBar);
     al_destroy_bitmap(cenarioEscritorio);
+    al_destroy_timer(timer);
 
 
     return 0;
