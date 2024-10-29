@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/keyboard.h>
+#include <allegro5/timer.h>
 #define ALLEGRO_BPS_TO_SECS(x) (1.0 / (x))
 
 void tela_inicial(ALLEGRO_DISPLAY* tela, ALLEGRO_FONT* font, ALLEGRO_BITMAP* area_central) {
@@ -27,7 +28,7 @@ void movimentacao(ALLEGRO_EVENT evento, int pos_x, int pos_y) {
     if (pos_x <= -30) pos_x = -30;
     if (pos_y >= 405) pos_y = 405;
     if (pos_y <= -20) pos_y = -20;
-    //0000
+
 
 }
 
@@ -85,7 +86,7 @@ int main() {
     bool jogando = true;
 
     ALLEGRO_EVENT evento; // Cria um evento
-
+    int seg = 0, min = 0;
     while (jogando) { // Evento para fechar a janela 
         al_wait_for_event(lista_eventos, &evento); // Espera pelo evento, quando executado executa a linha debaixo 
 
@@ -119,16 +120,26 @@ int main() {
 
             break;
         case 1://Puzzle 1
+            if (evento.type == ALLEGRO_EVENT_TIMER)
+            {
+                seg++;
+                if (seg == 60)
+                {
+                    min++;
+                    seg = 0;
+                }
+            }
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            al_draw_text(font, al_map_rgb(255, 255, 255), 100, 230, 0, "Vamos fazer um teste para ver se vc é capaz de entrar para"); 
+            al_draw_text(font, al_map_rgb(255, 255, 255), 100, 230, 0, "Vamos fazer um teste para ver se vc é capaz de entrar para");
             al_draw_text(font, al_map_rgb(255, 255, 255), 110, 240, 0, " para a nossa facilidade e ajudar com a nossa pesquisa.");
-            printf("%d\n", timer);
-            
-            if (timer >= 9999999999999) {
+
+            if (min > 6) {
                 al_stop_timer(timer);
                 al_clear_to_color(al_map_rgb(0, 0, 0));
+                al_draw_text(font, al_map_rgb(255, 255, 255), 100, 10, 0, "Resolva essa palavra cruzada para entrar no programa");
+
             }
-                
+
             break;
         case 2: //RADIO
 
