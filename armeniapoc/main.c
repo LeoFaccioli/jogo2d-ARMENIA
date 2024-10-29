@@ -27,7 +27,7 @@ void movimentacao(ALLEGRO_EVENT evento, int pos_x, int pos_y) {
     if (pos_x <= -30) pos_x = -30;
     if (pos_y >= 405) pos_y = 405;
     if (pos_y <= -20) pos_y = -20;
-
+    //0000
 
 }
 
