@@ -57,6 +57,7 @@ int main() {
     al_set_system_mouse_cursor(tela, ALLEGRO_SYSTEM_MOUSE_CURSOR_DEFAULT);
     ALLEGRO_FONT* font = al_create_builtin_font(); // Adiciona uma fonte, nesse caso a padr�o.
     ALLEGRO_TIMER* timer = al_create_timer(1.0 / 60.0); // FPS
+    ALLEGRO_TIMER* timer2 = al_create_timer(1.0);
     ALLEGRO_BITMAP* fantasma = al_load_bitmap("./fantasma.bmp");
     ALLEGRO_BITMAP* coracao = al_load_bitmap("./coracao.png");
     ALLEGRO_BITMAP* botaosair = al_load_bitmap("./botao_sair.png");
@@ -67,6 +68,7 @@ int main() {
     ALLEGRO_BITMAP* cenarioFora = al_load_bitmap("./cenario_fora.png");
     ALLEGRO_BITMAP* cenarioGaragem = al_load_bitmap("./cenario_garagem.png");
     ALLEGRO_BITMAP* cenarioDormitorio = al_load_bitmap("./cenario_dormitorio.png");
+    ALLEGRO_BITMAP* palavraCruzada = al_load_bitmap("./cruzada2.png");
 
 
     area_central = al_create_bitmap(340, 55);
@@ -75,9 +77,11 @@ int main() {
 
     al_register_event_source(lista_eventos, al_get_display_event_source(tela)); // Recupera a fonte de evento associada a janela.
     al_register_event_source(lista_eventos, al_get_timer_event_source(timer));
+    al_register_event_source(lista_eventos, al_get_timer_event_source(timer2));
     al_register_event_source(lista_eventos, al_get_keyboard_event_source());
     al_register_event_source(lista_eventos, al_get_mouse_event_source());
-    al_start_timer(timer); // Precisa dela para registrar os eventos
+    al_start_timer(timer);
+    al_start_timer(timer2);// Precisa dela para registrar os eventos
     float frame = 0.f;
     int pos_x = 100, pos_y = 100;
     int na_area_central = 0;
@@ -122,22 +126,32 @@ int main() {
         case 1://Puzzle 1
             if (evento.type == ALLEGRO_EVENT_TIMER)
             {
-                seg++;
-                if (seg == 60)
-                {
-                    min++;
-                    seg = 0;
+                if (evento.timer.source == timer2) {
+                    seg++;
+                    if (seg == 60)
+                    {
+                        min++;
+                        seg = 0;
+                    }
                 }
             }
             al_clear_to_color(al_map_rgb(0, 0, 0));
             al_draw_text(font, al_map_rgb(255, 255, 255), 100, 230, 0, "Vamos fazer um teste para ver se vc é capaz de entrar para");
             al_draw_text(font, al_map_rgb(255, 255, 255), 110, 240, 0, " para a nossa facilidade e ajudar com a nossa pesquisa.");
 
-            if (min > 6) {
-                al_stop_timer(timer);
-                al_clear_to_color(al_map_rgb(0, 0, 0));
-                al_draw_text(font, al_map_rgb(255, 255, 255), 100, 10, 0, "Resolva essa palavra cruzada para entrar no programa");
-
+            if (seg > 10) {
+                al_stop_timer(timer2);
+                al_clear_to_color(al_map_rgb(255, 255, 255));
+                al_draw_text(font, al_map_rgb(0, 0, 0), 100, 10, 0, "Resolva essa palavra cruzada para entrar no programa");
+                al_draw_bitmap(palavraCruzada, 90, 50, 0);
+                al_draw_text(font, al_map_rgb(0, 0, 0), 100, 400, 0, "1) Exterminio em massa das pessoas"); // 10 - Holocausto
+                al_draw_text(font, al_map_rgb(0, 0, 0), 100, 410, 0, "2) Movimento Político Alemão"); // 7 - Nazismo
+                al_draw_text(font, al_map_rgb(0, 0, 0), 100, 420, 0, "3) País derrotado na Guerra"); // 8 - Alemanha
+                al_draw_text(font, al_map_rgb(0, 0, 0), 100, 430, 0, "4) Vencedora da Guerra I"); // 10 - Inglaterra
+                al_draw_text(font, al_map_rgb(0, 0, 0), 100, 440, 0, "5) Líder nazista"); // 6 - Hitler
+                al_draw_text(font, al_map_rgb(0, 0, 0), 100, 450, 0, "6) Conseqência da Guerra"); // 10 - Destruição
+                al_draw_text(font, al_map_rgb(0, 0, 0), 100, 460, 0, "7) Conseqência da Guerra"); // 6 - Mortes
+                al_draw_text(font, al_map_rgb(0, 0, 0), 100, 470, 0, "8) Perseguidos pelos nazistas"); // 6 - Judeus
             }
 
             break;
