@@ -5,6 +5,8 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/keyboard.h>
 #include <allegro5/timer.h>
+#include <string.h>
+#include <allegro5/allegro_primitives.h>
 #define ALLEGRO_BPS_TO_SECS(x) (1.0 / (x))
 
 void tela_inicial(ALLEGRO_DISPLAY* tela, ALLEGRO_FONT* font, ALLEGRO_BITMAP* area_central) {
@@ -32,6 +34,8 @@ void movimentacao(ALLEGRO_EVENT evento, int pos_x, int pos_y) {
 
 }
 
+
+
 int main() {
     // INICIA��O
     al_init();
@@ -51,8 +55,8 @@ int main() {
         int altura;
     };
 
-    const int LARGURA_TELA = 640;
-    const int ALTURA_TELA = 480;
+    const int LARGURA_TELA = 1280;
+    const int ALTURA_TELA = 900;
     ALLEGRO_DISPLAY* tela = al_create_display(LARGURA_TELA, ALTURA_TELA); // Cria um display com um tamanho especificado w, h
     al_set_system_mouse_cursor(tela, ALLEGRO_SYSTEM_MOUSE_CURSOR_DEFAULT);
     ALLEGRO_FONT* font = al_create_builtin_font(); // Adiciona uma fonte, nesse caso a padr�o.
@@ -82,6 +86,8 @@ int main() {
     al_register_event_source(lista_eventos, al_get_mouse_event_source());
     al_start_timer(timer);
     al_start_timer(timer2);// Precisa dela para registrar os eventos
+
+
     float frame = 0.f;
     int pos_x = 100, pos_y = 100;
     int na_area_central = 0;
@@ -107,19 +113,21 @@ int main() {
 
         case 0:
 
-            al_draw_bitmap(coracao, 295, 150, 0);
-            al_draw_bitmap(botaojogar, 220, 220, 0); // 220 + 200, 220 + 80
-            al_draw_bitmap(botaosair, 220, 270, 0); // 220 + 200, 270 + 80 
+            al_draw_bitmap(coracao, 600, 450, 0); //70
+            al_draw_bitmap(botaojogar, 530, 520, 0); // 220 + 200, 220 + 80
+            al_draw_bitmap(botaosair, 530, 570, 0); // 220 + 200, 270 + 80 
 
             if (evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
                 int mouseX = evento.mouse.x;
                 int mouseY = evento.mouse.y;
 
-                if (mouseX >= 220 && mouseX <= 420 && mouseY >= 220 && mouseY <= 300)
-                    estadoatual = 1;
-                if (mouseX >= 220 && mouseX <= 420 && mouseY >= 270 && mouseY <= 350) {
+                
+                if (mouseX >= 530 && mouseX <= 730 && mouseY >= 520 && mouseY <= 600)
+                    estadoatual = 2;
+                al_draw_bitmap(fantasma, 530, 510, 0);
+                if (mouseX >= 530 && mouseX <= 730 && mouseY >= 570 && mouseY <= 650) 
                     jogando = false;
-                }
+                
             }
 
             break;
@@ -143,7 +151,8 @@ int main() {
                 al_stop_timer(timer2);
                 al_clear_to_color(al_map_rgb(255, 255, 255));
                 al_draw_text(font, al_map_rgb(0, 0, 0), 100, 10, 0, "Resolva essa palavra cruzada para entrar no programa");
-                al_draw_bitmap(palavraCruzada, 90, 50, 0);
+
+                /*al_draw_bitmap(palavraCruzada, 90, 50, 0);
                 al_draw_text(font, al_map_rgb(0, 0, 0), 100, 400, 0, "1) Exterminio em massa das pessoas"); // 10 - Holocausto
                 al_draw_text(font, al_map_rgb(0, 0, 0), 100, 410, 0, "2) Movimento Político Alemão"); // 7 - Nazismo
                 al_draw_text(font, al_map_rgb(0, 0, 0), 100, 420, 0, "3) País derrotado na Guerra"); // 8 - Alemanha
@@ -152,8 +161,9 @@ int main() {
                 al_draw_text(font, al_map_rgb(0, 0, 0), 100, 450, 0, "6) Conseqência da Guerra"); // 10 - Destruição
                 al_draw_text(font, al_map_rgb(0, 0, 0), 100, 460, 0, "7) Conseqência da Guerra"); // 6 - Mortes
                 al_draw_text(font, al_map_rgb(0, 0, 0), 100, 470, 0, "8) Perseguidos pelos nazistas"); // 6 - Judeus
+                */
             }
-
+            
             break;
         case 2: //RADIO
 
@@ -167,10 +177,10 @@ int main() {
                 else if (evento.keyboard.keycode == ALLEGRO_KEY_DOWN) pos_y += 10;
 
             }
-
-            if (pos_x >= 565) pos_x = 565;
-            if (pos_x <= -30) pos_x = -30;
-            if (pos_y >= 405) pos_y = 405;
+            //640 480 1280 900
+            if (pos_x >= 1205) pos_x = 1205;// - 75
+            if (pos_x <= -30) pos_x = -30; 
+            if (pos_y >= 825) pos_y = 825; // -75
             if (pos_y <= -20) pos_y = -20;
 
             if (pos_x > LARGURA_TELA - 90 && pos_y < ALTURA_TELA - 250 && pos_y > ALTURA_TELA - 300)
