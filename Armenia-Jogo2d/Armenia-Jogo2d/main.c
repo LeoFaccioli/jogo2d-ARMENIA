@@ -192,21 +192,47 @@ int main() {
                 break;
             case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
                 if (imagem_arrastada != NULL) {
+                    int pontos = 0;
                     for (int i = 0; i < 4; i++) {
                         printf("imagem_arrastada: %p\n", imagem_arrastada);
                         // Verifica se a imagem atual é a que está sendo arrastada
-                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[i].ax, imagens[i].ay, 20)) {
+                            
+                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[0].ax, imagens[0].ay, 20)) {
+                                pontos+=1;
                                 imagem_arrastada->x = imagem_arrastada->ax + 2;
                                 imagem_arrastada->y = imagem_arrastada->ay + 5;
-                                i++;
-                                al_draw_text(font, al_map_rgb(0, 0, 0), 500, 500, 0, "Sucesso!");
+                                printf("%d", pontos);
                                 break;
+                                
                             }
-                            else {
-                                al_draw_text(font, al_map_rgb(0, 0, 0), imagem_arrastada->ax, imagem_arrastada->ax + 100, 0, "Erro!");
+                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[1].ax, imagens[0].ay, 20)) {
+                                pontos+=1;
+                                imagem_arrastada->x = imagens[1].ax + 2;
+                                imagem_arrastada->y = imagens[0].ay + 5;
+                                printf("%d", pontos);
+                                break;
+                                
                             }
-                           
-                        
+                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[2].ax, imagens[0].ay, 20)) {
+                                pontos+=1;
+                                imagem_arrastada->x = imagens[2].ax + 2;
+                                imagem_arrastada->y = imagens[0].ay + 5;
+                                printf("%d", pontos);
+                                break;
+                                
+                            }
+                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[3].ax, imagens[0].ay, 20)) {
+                                pontos+=1;
+                                imagem_arrastada->x = imagens[3].ax + 2;
+                                imagem_arrastada->y = imagens[0].ay + 5;
+                                printf("%d", pontos);
+                                
+                                
+                            }
+                            if (pontos >= 4) {
+                                estadoatual = 2;
+                            }
+
                     }
 
                     // Resetar o estado após processar todas as imagens
