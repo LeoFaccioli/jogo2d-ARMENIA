@@ -33,12 +33,35 @@ void movimentacao(ALLEGRO_EVENT evento, int pos_x, int pos_y) {
 
 
 }
+bool verificar_posicao(int x, int y, int x_alvo, int y_alvo, int tolerancia) {
+    printf("x: %d, y: %d, x_alvo: %d, y_alvo: %d, tolerancia: %d\n", x, y, x_alvo, y_alvo, tolerancia);
+    if (x >= x_alvo - tolerancia && x <= x_alvo + tolerancia && y >= y_alvo - tolerancia && y <= y_alvo + tolerancia) {
+        printf("Posição correta!\n");
+        return true;
+    }
+    else {
+        printf("Posição incorreta!\n");
+        return false;
+    }
+}
+
+
+int posicao_inicial_x;
+int posicao_inicial_y;
+
+typedef struct {
+    float x, y;
+    int largura, altura, ax, ay;
+    bool sendo_arrastada;
+    ALLEGRO_BITMAP* bitmap;
+} Imagem;
 
 
 
 int main() {
     // INICIA��O
     al_init();
+    al_init_image_addon();
     al_init_font_addon();
     al_init_image_addon();
     al_install_keyboard();
@@ -47,16 +70,8 @@ int main() {
     ALLEGRO_BITMAP* botao_sair = NULL, * area_central = 0;
     int sair = 0;
 
-    // Imagem
-    struct Imagem {
-        int x;
-        int y;
-        int largura;
-        int altura;
-    };
-
     const int LARGURA_TELA = 1280;
-    const int ALTURA_TELA = 900;
+    const int ALTURA_TELA = 700;
     ALLEGRO_DISPLAY* tela = al_create_display(LARGURA_TELA, ALTURA_TELA); // Cria um display com um tamanho especificado w, h
     al_set_system_mouse_cursor(tela, ALLEGRO_SYSTEM_MOUSE_CURSOR_DEFAULT);
     ALLEGRO_FONT* font = al_create_builtin_font(); // Adiciona uma fonte, nesse caso a padr�o.
@@ -73,6 +88,15 @@ int main() {
     ALLEGRO_BITMAP* cenarioGaragem = al_load_bitmap("./cenario_garagem.png");
     ALLEGRO_BITMAP* cenarioDormitorio = al_load_bitmap("./cenario_dormitorio.png");
     ALLEGRO_BITMAP* palavraCruzada = al_load_bitmap("./cruzada2.png");
+    ALLEGRO_BITMAP* g_linear = al_load_bitmap("./linear.png");
+    ALLEGRO_BITMAP* g_expo = al_load_bitmap("./exponencial.png");
+    ALLEGRO_BITMAP* g_quadra = al_load_bitmap("./quadratica.png");
+    ALLEGRO_BITMAP* g_log = al_load_bitmap("./logaritimica.png");
+    ALLEGRO_BITMAP* res_lin = al_load_bitmap("./res_lin.png");
+    ALLEGRO_BITMAP* res_expo = al_load_bitmap("./res_expo.png");
+    ALLEGRO_BITMAP* res_quad = al_load_bitmap("./res_quad.png");
+    ALLEGRO_BITMAP* res_log = al_load_bitmap("./res_log.png");
+    ALLEGRO_BITMAP* qua_resp = al_load_bitmap("./local_resp.png");
 
 
     area_central = al_create_bitmap(340, 55);
@@ -87,14 +111,45 @@ int main() {
     al_start_timer(timer);
     al_start_timer(timer2);// Precisa dela para registrar os eventos
 
-
+    bool arrastando;
     float frame = 0.f;
     int pos_x = 100, pos_y = 100;
     int na_area_central = 0;
 
-    int estadoatual = 0; // Modificado: Inicializei com 0 em vez de 2 (tela inicial)
+    int estadoatual = 9; // Modificado: Inicializei com 0 em vez de 2 (tela inicial)
     bool jogando = true;
 
+    struct Posicao {
+        int x;
+        int y;
+        int largura;
+        int altura;
+        ALLEGRO_BITMAP* dados;
+    };
+    Imagem imagens[4];
+    struct Posicao linear = { 1030,550,115,40 };
+    struct Posicao expo = { 680,550,93,36 };
+    struct Posicao quadra = { 80,550,178,38 };
+    struct Posicao log = { 400,550,127,35 };
+    struct Posicao resp = { 80,420,180,51 };
+    imagens[0].bitmap = al_load_bitmap("./res_quad.png");
+    imagens[0].x = 80; imagens[0].y = 550; imagens[0].largura = 178; imagens[0].altura = 38;
+    imagens[0].ax = 680; imagens[0].ay = 420;
+
+    imagens[1].bitmap = al_load_bitmap("./res_log.png");
+    imagens[1].x = 400; imagens[1].y = 550; imagens[1].largura = 127; imagens[1].altura = 35;
+    imagens[1].ax = 1030;
+
+    imagens[2].bitmap = al_load_bitmap("./res_expo.png");
+    imagens[2].x = 680; imagens[2].y = 550; imagens[2].largura = 93; imagens[2].altura = 36;
+    imagens[2].ax = 400;
+
+    imagens[3].bitmap = al_load_bitmap("./res_lin.png");
+    imagens[3].x = 1030; imagens[3].y = 550; imagens[3].largura = 115; imagens[3].altura = 40;
+    imagens[3].ax = 80;
+
+    int mouseX, mouseY;
+    Imagem* imagem_arrastada = NULL;
     ALLEGRO_EVENT evento; // Cria um evento
     int seg = 0, min = 0;
     while (jogando) { // Evento para fechar a janela 
@@ -103,16 +158,89 @@ int main() {
         ALLEGRO_MOUSE_STATE state;
         al_get_mouse_state(&state);
 
+
+
         if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) { // Evento de "apertar no xzinho da janela, finaliza o programa
             jogando = false; // Modificado: Usei false em vez de 0 para maior clareza
         }
 
 
-
+        int posicao_inicial_x;
+        int posicao_inicial_y;
         switch (estadoatual) {
 
-        case 0:
+        case 9:
+            switch (evento.type) {
+                bool imagem_sendo_arrastada = false;
+                int indice_imagem_arrastada = -1;
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                mouseX = evento.mouse.x;
+                mouseY = evento.mouse.y;
 
+                for (int i = 0; i < 4; i++) {
+                    if (mouseX >= imagens[i].x && mouseX <= imagens[i].x + imagens[i].largura &&
+                        mouseY >= imagens[i].y && mouseY <= imagens[i].y + imagens[i].altura) {
+                        imagem_arrastada = &imagens[i];
+                        posicao_inicial_x = mouseX;
+                        posicao_inicial_y = mouseY;
+                        imagem_sendo_arrastada = true;
+            indice_imagem_arrastada = i;
+            break;
+
+                    }
+                }
+                break;
+            case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+                if (imagem_arrastada != NULL) {
+                    for (int i = 0; i < 4; i++) {
+                        printf("imagem_arrastada: %p\n", imagem_arrastada);
+                        // Verifica se a imagem atual é a que está sendo arrastada
+                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[i].ax, imagens[i].ay, 20)) {
+                                imagem_arrastada->x = imagem_arrastada->ax + 2;
+                                imagem_arrastada->y = imagem_arrastada->ay + 5;
+                                i++;
+                                al_draw_text(font, al_map_rgb(0, 0, 0), 500, 500, 0, "Sucesso!");
+                                break;
+                            }
+                            else {
+                                al_draw_text(font, al_map_rgb(0, 0, 0), imagem_arrastada->ax, imagem_arrastada->ax + 100, 0, "Erro!");
+                            }
+                           
+                        
+                    }
+
+                    // Resetar o estado após processar todas as imagens
+                    imagem_arrastada = NULL;
+                }
+                break;
+            case ALLEGRO_EVENT_MOUSE_AXES:
+                if (imagem_arrastada) {
+                    // Atualizar a posição da imagem arrastada
+                    imagem_arrastada->x = evento.mouse.x;
+                    imagem_arrastada->y = evento.mouse.y;
+                }
+                break;
+            }
+
+            // Desenhar as imagens
+            al_clear_to_color(al_map_rgb(255, 255, 255));
+            al_draw_text(font, al_map_rgb(0, 0, 0), 500, 25, 0, "Coloque os nomes nas funções corretas");
+            al_draw_bitmap(qua_resp, resp.x, resp.y, 0); // linear
+            al_draw_bitmap(qua_resp, resp.x + 320, resp.y, 0); // exponencial
+            al_draw_bitmap(qua_resp, resp.x + 600, resp.y, 0); // quadratica
+            al_draw_bitmap(qua_resp, resp.x + 950, resp.y, 0); // logari
+            al_draw_bitmap(g_linear, 20, 50, 0);//300,306
+            al_draw_bitmap(g_expo, 330, 50, 0);//311,403
+            al_draw_bitmap(g_quadra, 640, 50, 0); //263
+            al_draw_bitmap(g_log, 910, 50, 0);
+            for (int i = 0; i < 4; i++) {
+
+                al_draw_bitmap(imagens[i].bitmap, imagens[i].x, imagens[i].y, 0);
+            }
+            al_flip_display();
+
+            break;
+        case 0:
             al_draw_bitmap(coracao, 600, 450, 0); //70
             al_draw_bitmap(botaojogar, 530, 520, 0); // 220 + 200, 220 + 80
             al_draw_bitmap(botaosair, 530, 570, 0); // 220 + 200, 270 + 80 
@@ -121,13 +249,13 @@ int main() {
                 int mouseX = evento.mouse.x;
                 int mouseY = evento.mouse.y;
 
-                
+
                 if (mouseX >= 530 && mouseX <= 730 && mouseY >= 520 && mouseY <= 600)
                     estadoatual = 2;
                 al_draw_bitmap(fantasma, 530, 510, 0);
-                if (mouseX >= 530 && mouseX <= 730 && mouseY >= 570 && mouseY <= 650) 
+                if (mouseX >= 530 && mouseX <= 730 && mouseY >= 570 && mouseY <= 650)
                     jogando = false;
-                
+
             }
 
             break;
@@ -163,7 +291,7 @@ int main() {
                 al_draw_text(font, al_map_rgb(0, 0, 0), 100, 470, 0, "8) Perseguidos pelos nazistas"); // 6 - Judeus
                 */
             }
-            
+
             break;
         case 2: //RADIO
 
@@ -179,7 +307,7 @@ int main() {
             }
             //640 480 1280 900
             if (pos_x >= 1205) pos_x = 1205;// - 75
-            if (pos_x <= -30) pos_x = -30; 
+            if (pos_x <= -30) pos_x = -30;
             if (pos_y >= 825) pos_y = 825; // -75
             if (pos_y <= -20) pos_y = -20;
 
