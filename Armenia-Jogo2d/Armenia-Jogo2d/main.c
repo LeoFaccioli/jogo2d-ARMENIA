@@ -111,12 +111,13 @@ int main() {
     al_start_timer(timer);
     al_start_timer(timer2);// Precisa dela para registrar os eventos
 
+    bool passou_todos = false;
     bool arrastando;
     float frame = 0.f;
-    int pos_x = 100, pos_y = 100;
+    int pos_x = -50, pos_y = ALTURA_TELA/2+40;
     int na_area_central = 0;
 
-    int estadoatual = 9; // Modificado: Inicializei com 0 em vez de 2 (tela inicial)
+    int estadoatual = 0; // Modificado: Inicializei com 0 em vez de 2 (tela inicial)
     bool jogando = true;
 
     struct Posicao {
@@ -267,19 +268,18 @@ int main() {
 
             break;
         case 0:
-            al_draw_bitmap(coracao, 600, 450, 0); //70
-            al_draw_bitmap(botaojogar, 530, 520, 0); // 220 + 200, 220 + 80
-            al_draw_bitmap(botaosair, 530, 570, 0); // 220 + 200, 270 + 80 
+            al_draw_bitmap(coracao, 600, 250, 0); //70
+            al_draw_bitmap(botaojogar, 530, 300, 0); // 220 + 200, 220 + 80
+            al_draw_bitmap(botaosair, 530, 350, 0); // 220 + 200, 270 + 80 
 
             if (evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
                 int mouseX = evento.mouse.x;
                 int mouseY = evento.mouse.y;
 
 
-                if (mouseX >= 530 && mouseX <= 730 && mouseY >= 520 && mouseY <= 600)
-                    estadoatual = 2;
-                al_draw_bitmap(fantasma, 530, 510, 0);
-                if (mouseX >= 530 && mouseX <= 730 && mouseY >= 570 && mouseY <= 650)
+                if (mouseX >= 530 && mouseX <= 730 && mouseY >= 300 && mouseY <= 380)
+                    estadoatual = 1;
+                if (mouseX >= 530 && mouseX <= 730 && mouseY >= 350 && mouseY <= 420)
                     jogando = false;
 
             }
@@ -298,10 +298,11 @@ int main() {
                 }
             }
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            al_draw_text(font, al_map_rgb(255, 255, 255), 100, 230, 0, "Vamos fazer um teste para ver se vc é capaz de entrar para");
-            al_draw_text(font, al_map_rgb(255, 255, 255), 110, 240, 0, " para a nossa facilidade e ajudar com a nossa pesquisa.");
+            al_draw_text(font, al_map_rgb(255, 255, 255), 470, 320, 0, "Parabéns por passar no nosso programa");
+            al_draw_text(font, al_map_rgb(255, 255, 255), 480, 330, 0, "seja bem vindo a nossa facilidade.");
 
             if (seg > 10) {
+                estadoatual = 3;
                 al_stop_timer(timer2);
                 al_clear_to_color(al_map_rgb(255, 255, 255));
                 al_draw_text(font, al_map_rgb(0, 0, 0), 100, 10, 0, "Resolva essa palavra cruzada para entrar no programa");
@@ -334,16 +335,17 @@ int main() {
             //640 480 1280 900
             if (pos_x >= 1205) pos_x = 1205;// - 75
             if (pos_x <= -30) pos_x = -30;
-            if (pos_y >= 825) pos_y = 825; // -75
+            if (pos_y >= 825) pos_y = 625; // -75
             if (pos_y <= -20) pos_y = -20;
 
-            if (pos_x > LARGURA_TELA - 90 && pos_y < ALTURA_TELA - 250 && pos_y > ALTURA_TELA - 300)
+            //direita
+            if (pos_x > LARGURA_TELA - 90 && pos_y < ALTURA_TELA - 400 && pos_y > ALTURA_TELA - 450)
             {
                 al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
                     if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
-                        pos_x = -50; pos_y = ALTURA_TELA / 2 - 50;
+                        pos_x = -50; pos_y = ALTURA_TELA / 2 + 40;
                         estadoatual = 3;
                     }
                 }
@@ -364,28 +366,55 @@ int main() {
 
             }
 
-            if (pos_x >= 565) pos_x = 565;
+            if (pos_x >= 1205) pos_x = 1205;// - 75
             if (pos_x <= -30) pos_x = -30;
-            if (pos_y >= 405) pos_y = 405;
+            if (pos_y >= 825) pos_y = 625; // -75
             if (pos_y <= -20) pos_y = -20;
 
 
-
-            //ENTRA para cima
-            if (pos_x < LARGURA_TELA - 300 && pos_x > LARGURA_TELA - 350 && pos_y < ALTURA_TELA - 490)
+           
+            //ENTRA para cima casa  meio
+            if(passou_todos){
+                if (pos_x < LARGURA_TELA - 600 && pos_x > LARGURA_TELA - 650 && pos_y < ALTURA_TELA - 690)
+                {
+                    al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
+                    if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+                        if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
+                            al_clear_to_color(al_map_rgb(0, 0, 0));
+                            pos_x = LARGURA_TELA / 2 - 50; pos_y = ALTURA_TELA - 50;
+                            estadoatual = 4;
+                        }
+                    }
+                }
+            }
+            //ENTRA para cima casa  direita
+            if (pos_x < LARGURA_TELA - 270 && pos_x > LARGURA_TELA - 320 && pos_y < ALTURA_TELA - 640 && pos_y > ALTURA_TELA - 680)
             {
                 al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
                     if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
-                        pos_x = LARGURA_TELA / 2 - 50; pos_y = ALTURA_TELA - 50;
-                        estadoatual = 4;
+                        pos_x = LARGURA_TELA - 280; pos_y = ALTURA_TELA - 120;
+                        estadoatual = 5;
+                    }
+                }
+            }
+
+            //ENTRA para cima casa  esq
+            if (pos_x < LARGURA_TELA - 940 && pos_x > LARGURA_TELA - 990 && pos_y < ALTURA_TELA - 540 && pos_y > ALTURA_TELA - 580)
+            {
+                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
+                if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+                    if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
+                        al_clear_to_color(al_map_rgb(0, 0, 0));
+                        pos_x = LARGURA_TELA - 300; pos_y = ALTURA_TELA - 125;
+                        estadoatual = 6;
                     }
                 }
             }
 
             //Entrar para baixo                                                    480 - 50
-            if (pos_x < LARGURA_TELA - 300 && pos_x > LARGURA_TELA - 350 && pos_y > ALTURA_TELA - 90)
+            /*if (pos_x < LARGURA_TELA - 700 && pos_x > LARGURA_TELA - 750 && pos_y > ALTURA_TELA - 90)
             {
                 al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -396,24 +425,23 @@ int main() {
                     }
                 }
             }
-
-            //direita
-            if (pos_x > LARGURA_TELA - 90 && pos_y < ALTURA_TELA - 250 && pos_y > ALTURA_TELA - 300)
+            */
+            /*//direita
+            if (pos_x > LARGURA_TELA - 90 && pos_y < ALTURA_TELA - 400 && pos_y > ALTURA_TELA - 450)
             {
                 al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
                     if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
                         pos_x = -50; pos_y = ALTURA_TELA / 2 - 50;
-                        estadoatual = 6;
+                        estadoatual = 3;
                     }
                 }
-                break;
             }
 
 
             //Entrar para a esquerda
-            if (pos_x < LARGURA_TELA - 540 && pos_y < ALTURA_TELA - 250 && pos_y > ALTURA_TELA - 300)
+            if (pos_x < LARGURA_TELA - 1310 && pos_y < ALTURA_TELA - 400 && pos_y > ALTURA_TELA - 450)
             {
                 al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -424,7 +452,7 @@ int main() {
                     }
                 }
             }
-
+            */
             break;
 
 
@@ -440,19 +468,20 @@ int main() {
 
             }
 
-            if (pos_x >= 565) pos_x = 565;
+            if (pos_x >= 1205) pos_x = 1205;// - 75
             if (pos_x <= -30) pos_x = -30;
-            if (pos_y >= 405) pos_y = 405;
+            if (pos_y >= 825) pos_y = 625; // -75
             if (pos_y <= -20) pos_y = -20;
 
-            if (pos_x < LARGURA_TELA - 300 && pos_x > LARGURA_TELA - 350 && pos_y > ALTURA_TELA - 90)
+            //Entrar para baixo                                                    480 - 50
+            if (pos_x < LARGURA_TELA - 700 && pos_x > LARGURA_TELA - 750 && pos_y > ALTURA_TELA - 90)
             {
                 al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
                     if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
                         pos_x = LARGURA_TELA / 2 - 50; pos_y = ALTURA_TELA - 530;
-                        estadoatual = 3;
+                        estadoatual = 5;
                     }
                 }
             }
@@ -469,21 +498,22 @@ int main() {
 
             }
 
-            if (pos_x >= 565) pos_x = 565;
+            if (pos_x >= 1205) pos_x = 1205;// - 75
             if (pos_x <= -30) pos_x = -30;
-            if (pos_y >= 405) pos_y = 405;
+            if (pos_y >= 825) pos_y = 625; // -75
             if (pos_y <= -20) pos_y = -20;
 
-
-            if (pos_x < LARGURA_TELA - 300 && pos_x > LARGURA_TELA - 350 && pos_y < ALTURA_TELA - 490) {
+            
+            //Entrar para baixo                                                    480 - 50
+            if (pos_x < LARGURA_TELA - 250 && pos_x > LARGURA_TELA - 300 && pos_y > ALTURA_TELA - 120)
+            {
                 al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
                     if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
-                        pos_x = LARGURA_TELA / 2 - 50; pos_y = ALTURA_TELA - 50;
+                        pos_x = LARGURA_TELA - 300; pos_y = ALTURA_TELA - 630;
                         estadoatual = 3;
                     }
-
                 }
             }
             break;
@@ -498,49 +528,52 @@ int main() {
 
             }
 
-            if (pos_x >= 565) pos_x = 565;
+            if (pos_x >= 1205) pos_x = 1205;// - 75
             if (pos_x <= -30) pos_x = -30;
-            if (pos_y >= 405) pos_y = 405;
+            if (pos_y >= 825) pos_y = 625; // -75
             if (pos_y <= -20) pos_y = -20;
 
-            //ESQUERDA
-            if (pos_x < LARGURA_TELA - 540 && pos_y < ALTURA_TELA - 250 && pos_y > ALTURA_TELA - 300)
+
+            //Entrar para baixo                                                    480 - 50
+            if (pos_x < LARGURA_TELA - 280 && pos_x > LARGURA_TELA - 320 && pos_y > ALTURA_TELA - 120)
+            {
+                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
+                if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+                    if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
+                        al_clear_to_color(al_map_rgb(0, 0, 0));
+                        pos_x = LARGURA_TELA - 960; pos_y = ALTURA_TELA - 530;
+                        estadoatual = 3;
+                    }
+                }
+            }
+            /*
+            //Entrar para a esquerda
+            if (pos_x < LARGURA_TELA - 1310 && pos_y < ALTURA_TELA - 400 && pos_y > ALTURA_TELA - 450)
             {
                 al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
                     if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
                         pos_x = LARGURA_TELA; pos_y = ALTURA_TELA / 2 - 50;
-                        estadoatual = 3;
+                        estadoatual = 2;
                     }
                 }
             }
+            
 
-            //Entrar para baixo                                                    480 - 50
-            if (pos_x < LARGURA_TELA - 300 && pos_x > LARGURA_TELA - 350 && pos_y > ALTURA_TELA - 90)
-            {
-                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
-                if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
-                    if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
-                        al_clear_to_color(al_map_rgb(0, 0, 0));
-                        pos_x = LARGURA_TELA / 2 - 50; pos_y = ALTURA_TELA - 530;
-                        estadoatual = 7;
-                    }
-                }
-            }
-
-            if (pos_x > LARGURA_TELA - 90 && pos_y < ALTURA_TELA - 250 && pos_y > ALTURA_TELA - 300)
+            //direita
+            if (pos_x > LARGURA_TELA - 90 && pos_y < ALTURA_TELA - 400 && pos_y > ALTURA_TELA - 450)
             {
                 al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
                     if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
                         pos_x = -50; pos_y = ALTURA_TELA / 2 - 50;
-                        estadoatual = 8;
+                        estadoatual = 3;
                     }
                 }
             }
-
+            */
             break;
 
 
@@ -557,21 +590,21 @@ int main() {
 
             }
 
-            if (pos_x >= 565) pos_x = 565;
+            if (pos_x >= 1205) pos_x = 1205;// - 75
             if (pos_x <= -30) pos_x = -30;
-            if (pos_y >= 405) pos_y = 405;
+            if (pos_y >= 825) pos_y = 625; // -75
             if (pos_y <= -20) pos_y = -20;
 
 
             //ENTRA para cima
-            if (pos_x < LARGURA_TELA - 300 && pos_x > LARGURA_TELA - 350 && pos_y < ALTURA_TELA - 490)
+            if (pos_x < LARGURA_TELA - 700 && pos_x > LARGURA_TELA - 750 && pos_y < ALTURA_TELA - 720)
             {
                 al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
                     if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
                         pos_x = LARGURA_TELA / 2 - 50; pos_y = ALTURA_TELA - 50;
-                        estadoatual = 6;
+                        estadoatual = 4;
                     }
                 }
             }
@@ -614,6 +647,16 @@ int main() {
         al_flip_display();
     }
 
+    al_destroy_bitmap(palavraCruzada);
+    al_destroy_bitmap(g_linear);
+    al_destroy_bitmap(g_expo);
+    al_destroy_bitmap(g_quadra);
+    al_destroy_bitmap(g_log);
+    al_destroy_bitmap(res_lin);
+    al_destroy_bitmap(res_expo);
+    al_destroy_bitmap(res_quad);
+    al_destroy_bitmap(res_log);
+    al_destroy_bitmap(qua_resp);
     al_destroy_bitmap(botaojogar);
     al_destroy_bitmap(botaosair);
     al_destroy_bitmap(coracao);
