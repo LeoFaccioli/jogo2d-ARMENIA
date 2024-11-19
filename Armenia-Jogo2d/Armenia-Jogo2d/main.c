@@ -127,7 +127,7 @@ int main() {
         int altura;
         ALLEGRO_BITMAP* dados;
     };
-    Imagem imagens[4];
+    Imagem imagens[8];
     struct Posicao linear = { 1030,550,115,40 };
     struct Posicao expo = { 680,550,93,36 };
     struct Posicao quadra = { 80,550,178,38 };
@@ -148,6 +148,22 @@ int main() {
     imagens[3].bitmap = al_load_bitmap("./res_lin.png");
     imagens[3].x = 1030; imagens[3].y = 550; imagens[3].largura = 115; imagens[3].altura = 40;
     imagens[3].ax = 80;
+
+    imagens[7].bitmap = al_load_bitmap("./res_quad.png");
+    imagens[7].x = 80; imagens[7].y = 550; imagens[7].largura = 178; imagens[7].altura = 38;
+    imagens[7].ax = 680; imagens[7].ay = 420;
+
+    imagens[5].bitmap = al_load_bitmap("./res_log.png");
+    imagens[5].x = 400; imagens[5].y = 550; imagens[5].largura = 127; imagens[5].altura = 35;
+    imagens[5].ax = 1030;
+
+    imagens[4].bitmap = al_load_bitmap("./res_expo.png");
+    imagens[4].x = 680; imagens[4].y = 550; imagens[4].largura = 93; imagens[4].altura = 36;
+    imagens[4].ax = 400;
+
+    imagens[6].bitmap = al_load_bitmap("./res_lin.png");
+    imagens[6].x = 1030; imagens[6].y = 550; imagens[6].largura = 115; imagens[6].altura = 40;
+    imagens[6].ax = 80;
 
     int mouseX, mouseY;
     Imagem* imagem_arrastada = NULL;
@@ -178,7 +194,7 @@ int main() {
                 mouseX = evento.mouse.x;
                 mouseY = evento.mouse.y;
 
-                for (int i = 0; i < 4; i++) {
+                for (int i = 4; i < 8; i++) {
                     if (mouseX >= imagens[i].x && mouseX <= imagens[i].x + imagens[i].largura &&
                         mouseY >= imagens[i].y && mouseY <= imagens[i].y + imagens[i].altura) {
                         imagem_arrastada = &imagens[i];
@@ -194,11 +210,11 @@ int main() {
             case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
                 if (imagem_arrastada != NULL) {
                     int pontos = 0;
-                    for (int i = 0; i < 4; i++) {
+                    for (int i = 4; i < 8; i++) {
                         printf("imagem_arrastada: %p\n", imagem_arrastada);
                         // Verifica se a imagem atual é a que está sendo arrastada
                             
-                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[0].ax, imagens[0].ay, 20)) {
+                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[7].ax, imagens[0].ay, 20)) {
                                 pontos+=1;
                                 imagem_arrastada->x = imagem_arrastada->ax + 2;
                                 imagem_arrastada->y = imagem_arrastada->ay + 5;
@@ -206,33 +222,135 @@ int main() {
                                 break;
                                 
                             }
-                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[1].ax, imagens[0].ay, 20)) {
+                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[5].ax, imagens[0].ay, 20)) {
                                 pontos+=1;
-                                imagem_arrastada->x = imagens[1].ax + 2;
+                                imagem_arrastada->x = imagens[5].ax + 2;
                                 imagem_arrastada->y = imagens[0].ay + 5;
                                 printf("%d", pontos);
                                 break;
                                 
                             }
-                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[2].ax, imagens[0].ay, 20)) {
+                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[4].ax, imagens[0].ay, 20)) {
                                 pontos+=1;
-                                imagem_arrastada->x = imagens[2].ax + 2;
+                                imagem_arrastada->x = imagens[4].ax + 2;
                                 imagem_arrastada->y = imagens[0].ay + 5;
                                 printf("%d", pontos);
                                 break;
                                 
                             }
-                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[3].ax, imagens[0].ay, 20)) {
+                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[6].ax, imagens[0].ay, 20)) {
                                 pontos+=1;
-                                imagem_arrastada->x = imagens[3].ax + 2;
+                                imagem_arrastada->x = imagens[6].ax + 2;
                                 imagem_arrastada->y = imagens[0].ay + 5;
                                 printf("%d", pontos);
                                 
                                 
                             }
                             if (pontos >= 4) {
-                                estadoatual = 2;
+                                pos_x = LARGURA_TELA - 770;
+                                pos_y = ALTURA_TELA - 500;
+                                estadoatual = 6;
                             }
+
+                    }
+
+                    // Resetar o estado após processar todas as imagens
+                    imagem_arrastada = NULL;
+                }
+                break;
+            case ALLEGRO_EVENT_MOUSE_AXES:
+                if (imagem_arrastada) {
+                    // Atualizar a posição da imagem arrastada
+                    imagem_arrastada->x = evento.mouse.x;
+                    imagem_arrastada->y = evento.mouse.y;
+                }
+                break;
+            }
+
+            // Desenhar as imagens
+            al_clear_to_color(al_map_rgb(255, 255, 255));
+            al_draw_text(font, al_map_rgb(0, 0, 0), 500, 25, 0, "Coloque os nomes nas funções corretas");
+            al_draw_bitmap(qua_resp, resp.x, resp.y, 0); // linear
+            al_draw_bitmap(qua_resp, resp.x + 320, resp.y, 0); // exponencial
+            al_draw_bitmap(qua_resp, resp.x + 600, resp.y, 0); // quadratica
+            al_draw_bitmap(qua_resp, resp.x + 950, resp.y, 0); // logari
+            al_draw_bitmap(g_linear, 20, 50, 0);//300,306
+            al_draw_bitmap(g_expo, 330, 50, 0);//311,403
+            al_draw_bitmap(g_quadra, 640, 50, 0); //263
+            al_draw_bitmap(g_log, 910, 50, 0);
+            for (int i = 4; i < 8; i++) {
+
+                al_draw_bitmap(imagens[i].bitmap, imagens[i].x, imagens[i].y, 0);
+            }
+            al_flip_display();
+
+            break;
+        case 10:
+            switch (evento.type) {
+                bool imagem_sendo_arrastada = false;
+                int indice_imagem_arrastada = -1;
+            case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
+                mouseX = evento.mouse.x;
+                mouseY = evento.mouse.y;
+
+                for (int i = 0; i < 4; i++) {
+                    if (mouseX >= imagens[i].x && mouseX <= imagens[i].x + imagens[i].largura &&
+                        mouseY >= imagens[i].y && mouseY <= imagens[i].y + imagens[i].altura) {
+                        imagem_arrastada = &imagens[i];
+                        posicao_inicial_x = mouseX;
+                        posicao_inicial_y = mouseY;
+                        imagem_sendo_arrastada = true;
+                        indice_imagem_arrastada = i;
+                        break;
+
+                    }
+                }
+                break;
+            case ALLEGRO_EVENT_MOUSE_BUTTON_UP:
+                if (imagem_arrastada != NULL) {
+                    int pontos = 0;
+                    for (int i = 0; i < 4; i++) {
+                        printf("imagem_arrastada: %p\n", imagem_arrastada);
+                        // Verifica se a imagem atual é a que está sendo arrastada
+
+                        if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[0].ax, imagens[0].ay, 20)) {
+                            pontos += 1;
+                            imagem_arrastada->x = imagem_arrastada->ax + 2;
+                            imagem_arrastada->y = imagem_arrastada->ay + 5;
+                            printf("%d", pontos);
+                            break;
+
+                        }
+                        if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[1].ax, imagens[0].ay, 20)) {
+                            pontos += 1;
+                            imagem_arrastada->x = imagens[1].ax + 2;
+                            imagem_arrastada->y = imagens[0].ay + 5;
+                            printf("%d", pontos);
+                            break;
+
+                        }
+                        if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[2].ax, imagens[0].ay, 20)) {
+                            pontos += 1;
+                            imagem_arrastada->x = imagens[2].ax + 2;
+                            imagem_arrastada->y = imagens[0].ay + 5;
+                            printf("%d", pontos);
+                            break;
+
+                        }
+                        if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[3].ax, imagens[0].ay, 20)) {
+                            pontos += 1;
+                            imagem_arrastada->x = imagens[3].ax + 2;
+                            imagem_arrastada->y = imagens[0].ay + 5;
+                            printf("%d", pontos);
+
+
+                        }
+                        if (pontos >= 4) {
+                            passou_todos = true;
+                            pos_x = LARGURA_TELA - 1030;
+                            pos_y = ALTURA_TELA - 430;
+                            estadoatual = 5;
+                        }
 
                     }
 
@@ -382,7 +500,7 @@ int main() {
                         if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
                             al_clear_to_color(al_map_rgb(0, 0, 0));
                             pos_x = LARGURA_TELA / 2 - 50; pos_y = ALTURA_TELA - 50;
-                            estadoatual = 4;
+                            estadoatual = 8;
                         }
                     }
                 }
@@ -476,7 +594,7 @@ int main() {
             //Entrar para baixo                                                    480 - 50
             if (pos_x < LARGURA_TELA - 700 && pos_x > LARGURA_TELA - 750 && pos_y > ALTURA_TELA - 90)
             {
-                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
+                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para sair");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
                     if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -503,7 +621,18 @@ int main() {
             if (pos_y >= 825) pos_y = 625; // -75
             if (pos_y <= -20) pos_y = -20;
 
-            
+
+            if (pos_x < LARGURA_TELA - 1000 && pos_x > LARGURA_TELA - 1050 && pos_y > ALTURA_TELA - 450 && pos_y < ALTURA_TELA - 400)
+            {
+                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para consertar");
+                if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+                    if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
+                        al_clear_to_color(al_map_rgb(0, 0, 0));
+                        pos_x = LARGURA_TELA - 300; pos_y = ALTURA_TELA - 630;
+                        estadoatual = 10;
+                    }
+                }
+            }
             //Entrar para baixo                                                    480 - 50
             if (pos_x < LARGURA_TELA - 250 && pos_x > LARGURA_TELA - 300 && pos_y > ALTURA_TELA - 120)
             {
@@ -537,7 +666,7 @@ int main() {
             //Entrar para baixo                                                    480 - 50
             if (pos_x < LARGURA_TELA - 280 && pos_x > LARGURA_TELA - 320 && pos_y > ALTURA_TELA - 120)
             {
-                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
+                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para sair");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
                     if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -546,6 +675,22 @@ int main() {
                     }
                 }
             }
+
+            
+            if (pos_x < LARGURA_TELA - 750& pos_x > LARGURA_TELA - 800 && pos_y > ALTURA_TELA - 550 && pos_y < ALTURA_TELA - 500)
+            {
+                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para resolver");
+                if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
+                    if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
+                        al_clear_to_color(al_map_rgb(0, 0, 0));
+                        pos_x = LARGURA_TELA - 960; pos_y = ALTURA_TELA - 530;
+                        estadoatual = 9;
+                    }
+                }
+            }
+
+
+
             /*
             //Entrar para a esquerda
             if (pos_x < LARGURA_TELA - 1310 && pos_y < ALTURA_TELA - 400 && pos_y > ALTURA_TELA - 450)
@@ -616,7 +761,7 @@ int main() {
         case 8:
 
             al_clear_to_color(al_map_rgb(0, 0, 0));
-            al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "Fim!");
+            al_draw_text(font, al_map_rgb(255, 255, 255), 600, 320, ALLEGRO_ALIGN_CENTRE, "Fim! Obrigado por jogar nosso jogo");
 
 
             break;
