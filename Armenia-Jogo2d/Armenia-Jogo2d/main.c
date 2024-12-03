@@ -230,6 +230,8 @@ int main() {
         return -1;
     }
 
+
+
     const int LARGURA_TELA = 1280;
     const int ALTURA_TELA = 700;
     ALLEGRO_DISPLAY* tela = al_create_display(LARGURA_TELA, ALTURA_TELA); // Cria um display com um tamanho especificado w, h
@@ -258,6 +260,15 @@ int main() {
     ALLEGRO_BITMAP* res_log = al_load_bitmap("./res_log.png");
     ALLEGRO_BITMAP* qua_resp = al_load_bitmap("./local_resp.png");
     ALLEGRO_BITMAP* seta = al_load_bitmap("./seta.png");
+    ALLEGRO_BITMAP* botaoplay = al_load_bitmap("./botaoplay.png");
+    ALLEGRO_BITMAP* botaoquit = al_load_bitmap("./botaoquit.png");
+    ALLEGRO_BITMAP* titulogame = al_load_bitmap("./titulogame.png");
+    ALLEGRO_BITMAP*  fundoinicial = al_load_bitmap("./fundoinicial.png");
+
+    int w_play = al_get_bitmap_width(botaoplay);
+    int h_play = al_get_bitmap_height(botaoplay);
+    int w_quit = al_get_bitmap_width(botaoquit);
+    int h_quit = al_get_bitmap_height(botaoquit);
 
 
     area_central = al_create_bitmap(340, 55);
@@ -282,7 +293,7 @@ int main() {
     int pos_x = -50, pos_y = ALTURA_TELA/2+40;
     int na_area_central = 0;
 
-    int estadoatual = 3; // Modificado: Inicializei com 0 em vez de 2 (tela inicial)
+    int estadoatual = 0; // Modificado: Inicializei com 0 em vez de 2 (tela inicial)
     bool jogando = true;
 
     struct Posicao {
@@ -334,6 +345,8 @@ int main() {
     Imagem* imagem_arrastada = NULL;
     ALLEGRO_EVENT evento; // Cria um evento
     int seg = 0, min = 0;
+
+
     while (jogando) { // Evento para fechar a janela 
         al_wait_for_event(lista_eventos, &evento); // Espera pelo evento, quando executado executa a linha debaixo 
 
@@ -567,18 +580,19 @@ int main() {
 
             break;
         case 0:
-            al_draw_bitmap(coracao, 600, 250, 0); //70
-            al_draw_bitmap(botaojogar, 530, 300, 0); // 220 + 200, 220 + 80
-            al_draw_bitmap(botaosair, 530, 350, 0); // 220 + 200, 270 + 80 
+            al_draw_bitmap(fundoinicial, 0, 0, 0); //70
+            al_draw_bitmap(titulogame, 400, 100, 0); // 220 + 200, 220 + 80
+            al_draw_bitmap(botaoplay, 493, 395, 0); // 220 + 200, 220 + 80
+            al_draw_bitmap(botaoquit, 530, 530, 0); // 220 + 200, 270 + 80 
 
             if (evento.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
                 int mouseX = evento.mouse.x;
                 int mouseY = evento.mouse.y;
 
 
-                if (mouseX >= 530 && mouseX <= 730 && mouseY >= 300 && mouseY <= 380)
+                if (mouseX >= 493 && mouseX <= 493 + w_play && mouseY >= 395 && mouseY <= 395 + h_play)
                     estadoatual = 11;
-                if (mouseX >= 530 && mouseX <= 730 && mouseY >= 350 && mouseY <= 420)
+                if (mouseX >= 530 && mouseX <= 530 + w_quit && mouseY >= 530 && mouseY <= 530 + h_quit)
                     jogando = false;
 
             }
@@ -710,46 +724,6 @@ int main() {
                 }
             }
 
-            //Entrar para baixo                                                    480 - 50
-            /*if (pos_x < LARGURA_TELA - 700 && pos_x > LARGURA_TELA - 750 && pos_y > ALTURA_TELA - 90)
-            {
-                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
-                if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
-                    if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
-                        al_clear_to_color(al_map_rgb(0, 0, 0));
-                        pos_x = LARGURA_TELA / 2 - 50; pos_y = ALTURA_TELA - 530;
-                        estadoatual = 5;
-                    }
-                }
-            }
-            */
-            /*//direita
-            if (pos_x > LARGURA_TELA - 90 && pos_y < ALTURA_TELA - 400 && pos_y > ALTURA_TELA - 450)
-            {
-                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
-                if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
-                    if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
-                        al_clear_to_color(al_map_rgb(0, 0, 0));
-                        pos_x = -50; pos_y = ALTURA_TELA / 2 - 50;
-                        estadoatual = 3;
-                    }
-                }
-            }
-
-
-            //Entrar para a esquerda
-            if (pos_x < LARGURA_TELA - 1310 && pos_y < ALTURA_TELA - 400 && pos_y > ALTURA_TELA - 450)
-            {
-                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
-                if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
-                    if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
-                        al_clear_to_color(al_map_rgb(0, 0, 0));
-                        pos_x = LARGURA_TELA; pos_y = ALTURA_TELA / 2 - 50;
-                        estadoatual = 2;
-                    }
-                }
-            }
-            */
             break;
 
 
@@ -877,36 +851,6 @@ int main() {
                 }
             }
 
-
-
-            /*
-            //Entrar para a esquerda
-            if (pos_x < LARGURA_TELA - 1310 && pos_y < ALTURA_TELA - 400 && pos_y > ALTURA_TELA - 450)
-            {
-                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
-                if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
-                    if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
-                        al_clear_to_color(al_map_rgb(0, 0, 0));
-                        pos_x = LARGURA_TELA; pos_y = ALTURA_TELA / 2 - 50;
-                        estadoatual = 2;
-                    }
-                }
-            }
-            
-
-            //direita
-            if (pos_x > LARGURA_TELA - 90 && pos_y < ALTURA_TELA - 400 && pos_y > ALTURA_TELA - 450)
-            {
-                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para entrar");
-                if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
-                    if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
-                        al_clear_to_color(al_map_rgb(0, 0, 0));
-                        pos_x = -50; pos_y = ALTURA_TELA / 2 - 50;
-                        estadoatual = 3;
-                    }
-                }
-            }
-            */
             break;
 
 
@@ -976,27 +920,6 @@ int main() {
             break;
         }
 
-
-
-
-
-
-
-        // Colorimos o bitmap correspondente ao ret�ngulo central,
-        // com a cor condicionada ao conte�do da flag na_area_central
-        /*
-        al_clear_to_color(al_map_rgb(0, 0, 0));
-        al_set_target_bitmap(area_central);
-        if (!na_area_central) {
-            al_clear_to_color(al_map_rgb(255, 255, 255));
-        }
-        else {
-            al_clear_to_color(al_map_rgb(0, 255, 0));
-        }
-        */
-
-
-        // Atualiza a tela
 
         al_flip_display();
     }

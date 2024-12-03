@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\nilo1\\source\\repos\\jogo2d-ARMENIA\\Armenia-Jogo2d\\",
+  "WorkspaceRootPath": "C:\\Users\\Leronardo\\source\\repos\\jogo2d-ARMENIA\\Armenia-Jogo2d\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F5118062-6D49-4420-8551-4C2B4DFD26B9}|Armenia-Jogo2d\\Armenia-Jogo2d.vcxproj|C:\\Users\\nilo1\\source\\repos\\jogo2d-ARMENIA\\Armenia-Jogo2d\\Armenia-Jogo2d\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{F5118062-6D49-4420-8551-4C2B4DFD26B9}|Armenia-Jogo2d\\Armenia-Jogo2d.vcxproj|C:\\Users\\Leronardo\\source\\repos\\jogo2d-ARMENIA\\Armenia-Jogo2d\\Armenia-Jogo2d\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{F5118062-6D49-4420-8551-4C2B4DFD26B9}|Armenia-Jogo2d\\Armenia-Jogo2d.vcxproj|solutionrelative:Armenia-Jogo2d\\main.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
@@ -20,11 +20,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "main.c",
-              "DocumentMoniker": "C:\\Users\\nilo1\\source\\repos\\jogo2d-ARMENIA\\Armenia-Jogo2d\\Armenia-Jogo2d\\main.c",
+              "DocumentMoniker": "C:\\Users\\Leronardo\\source\\repos\\jogo2d-ARMENIA\\Armenia-Jogo2d\\Armenia-Jogo2d\\main.c",
               "RelativeDocumentMoniker": "Armenia-Jogo2d\\main.c",
-              "ToolTip": "C:\\Users\\nilo1\\source\\repos\\jogo2d-ARMENIA\\Armenia-Jogo2d\\Armenia-Jogo2d\\main.c",
+              "ToolTip": "C:\\Users\\Leronardo\\source\\repos\\jogo2d-ARMENIA\\Armenia-Jogo2d\\Armenia-Jogo2d\\main.c",
               "RelativeToolTip": "Armenia-Jogo2d\\main.c",
-              "ViewState": "AgIAADYAAAAAAAAAAAAEwHQAAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAAKMCAAAAAAAAAAAAAGoDAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2024-11-17T18:32:31.272Z",
               "EditorCaption": ""
