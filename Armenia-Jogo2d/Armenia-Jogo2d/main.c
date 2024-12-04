@@ -14,6 +14,14 @@
 #define GRID_SIZE2 10// Tamanho do grid 5x5
 #define CELL_SIZE 30 // Tamanho de cada célula
 
+void gearscreen(ALLEGRO_FONT* fonte, int engrenagens, int x, int y) {
+    al_draw_filled_circle(x + 25, y - 6, 10, al_map_rgb(238, 173, 45)); 
+    al_draw_textf(fonte, al_map_rgb(0, 0, 0), x + 20 + 1, y - 9, 0, "%d", engrenagens); // Exibe o número de engrenagens
+    al_draw_textf(fonte, al_map_rgb(255, 255, 255), x + 20, y - 10, 0, "%d", engrenagens); // Exibe o número de engrenagens
+}
+
+
+
 char palavras_respostas[GRID_SIZE2][GRID_SIZE] = {
     {'X', 'X', 'N', 'A', 'Z', 'I', 'S', 'M', 'O', 'X', 'X', 'D', 'X'},
     {'X', 'X', 'X', 'X', 'X', 'N', 'X', 'X', 'X', 'X', 'X', 'E', 'X'},
@@ -211,7 +219,10 @@ int main() {
     al_init_font_addon();
     al_init_image_addon();
     al_install_keyboard();
-    al_set_new_window_title("Primeira Tela");
+    al_init_font_addon();
+    al_init_ttf_addon();
+    al_set_new_window_title("Enigma Game");
+
     al_install_mouse();
     ALLEGRO_BITMAP* botao_sair = NULL, * area_central = 0;
     int sair = 0;
@@ -263,7 +274,16 @@ int main() {
     ALLEGRO_BITMAP* botaoplay = al_load_bitmap("./botaoplay.png");
     ALLEGRO_BITMAP* botaoquit = al_load_bitmap("./botaoquit.png");
     ALLEGRO_BITMAP* titulogame = al_load_bitmap("./titulogame.png");
-    ALLEGRO_BITMAP*  fundoinicial = al_load_bitmap("./fundoinicial.png");
+    ALLEGRO_BITMAP* fundoinicial = al_load_bitmap("./fundoinicial.png");
+    ALLEGRO_BITMAP* gearimg = al_load_bitmap("./engrenagem.png");
+    ALLEGRO_BITMAP* greg = al_load_bitmap("./greg.png");
+    ALLEGRO_BITMAP* grace = al_load_bitmap("./grace.png");
+    ALLEGRO_BITMAP* joao = al_load_bitmap("./joao.png");
+
+
+
+    al_set_display_icon(tela, gearimg);
+
 
     int w_play = al_get_bitmap_width(botaoplay);
     int h_play = al_get_bitmap_height(botaoplay);
@@ -292,8 +312,19 @@ int main() {
     float frame = 0.f;
     int pos_x = -50, pos_y = ALTURA_TELA/2+40;
     int na_area_central = 0;
+    
+    
+    int gears = 0;
+    int dialogojoao = 0;
 
-    int estadoatual = 0; // Modificado: Inicializei com 0 em vez de 2 (tela inicial)
+
+    
+    
+
+
+
+
+    int estadoatual = 3; // Modificado: Inicializei com 0 em vez de 2 (tela inicial)
     bool jogando = true;
 
     struct Posicao {
@@ -654,8 +685,61 @@ int main() {
 
         case 3: //PARTE DE FORA
             
+
             al_draw_bitmap(cenarioFora, 0, 0, 0);
+            al_draw_bitmap(joao, 200, 300, 0);
             al_draw_bitmap(fantasma, pos_x, pos_y, 0);
+            al_draw_bitmap(gearimg, 27, 10, 0);
+            gearscreen(font, gears, 50, 50);
+            
+
+            if (pos_x >= 120 && pos_x <= 254 && pos_y >= 250 && pos_y <= 405) {
+                al_draw_filled_rectangle(148, 262, 306, 281, al_map_rgb(0, 0, 0));
+                al_draw_text(font, al_map_rgb(255, 255, 255), 150, 270, ALLEGRO_ALIGN_LEFT, "Aperte E para falar");
+
+                if (evento.type == ALLEGRO_EVENT_KEY_DOWN && evento.keyboard.keycode == ALLEGRO_KEY_E) {
+                    al_clear_to_color(al_map_rgb(0, 0, 0));  
+                    al_draw_filled_rectangle(264, 164, 1016, 511, al_map_rgb(0, 0, 0)); 
+
+
+                    if (dialogojoao == 0 && evento.type == ALLEGRO_EVENT_KEY_DOWN && evento.keyboard.keycode == ALLEGRO_KEY_E) {
+                        printf("Primeira parte do diálogo\n");
+                        dialogojoao++;
+                    }
+                    else if (dialogojoao == 1) {
+                        printf("Segunda parte do diálogo\n");
+                        al_clear_to_color(al_map_rgb(0, 0, 0));  
+                        al_draw_filled_rectangle(264, 164, 1016, 511, al_map_rgb(0, 0, 0));
+                        al_flip_display(); 
+                        dialogojoao++;
+                    }
+                    else if (dialogojoao == 2) {
+                        printf("Terceira parte do diálogo\n");
+                        dialogojoao++;
+                    }
+                    else if (dialogojoao == 3) {
+                        printf("Quarta parte do diálogo\n");
+                        dialogojoao++;
+                    }
+                    else if (dialogojoao == 4) {
+                        printf("Quinta parte do diálogo\n");
+                        dialogojoao++;
+                    }
+                    else if (dialogojoao == 5) {
+                        printf("Sexta parte do diálogo\n");
+                        dialogojoao++;
+                    }
+                    else {
+                        printf("Diálogo encerrado\n");
+                    }
+                }
+            }
+
+                   
+
+           
+
+
 
             if (evento.type != ALLEGRO_EVENT_KEY_DOWN) {
                 if (evento.keyboard.keycode == ALLEGRO_KEY_RIGHT) pos_x += 10;
@@ -730,6 +814,8 @@ int main() {
         case 4: //DORMITORIO
             al_draw_bitmap(cenarioDormitorio, 0, 0, 0);
             al_draw_bitmap(fantasma, pos_x, pos_y, 0);
+            al_draw_bitmap(gearimg, 27, 10, 0);
+            gearscreen(font, gears, 50, 50);
 
             if (evento.type != ALLEGRO_EVENT_KEY_DOWN) {
                 if (evento.keyboard.keycode == ALLEGRO_KEY_RIGHT) pos_x += 10;
@@ -759,6 +845,8 @@ int main() {
             break;
         case 5: //BAR
             al_draw_bitmap(cenarioBar, 0, 0, 0);
+            al_draw_bitmap(gearimg, 27, 10, 0);
+            gearscreen(font, gears, 50, 50);
             al_draw_bitmap(fantasma, pos_x, pos_y, 0);
 
             if (evento.type != ALLEGRO_EVENT_KEY_DOWN) {
@@ -786,6 +874,7 @@ int main() {
                         passou_todos = true;
                         passou_2 = true;
                         estadoatual = 10;
+                        gears += 1;
                     }
                 }
             }
@@ -805,6 +894,8 @@ int main() {
             break;
         case 6: //ESCRITORIO
             al_draw_bitmap(cenarioEscritorio, 0, 0, 0);
+            al_draw_bitmap(gearimg, 27, 10, 0);
+            gearscreen(font, gears, 50, 50);
             al_draw_bitmap(fantasma, pos_x, pos_y, 0);
             if (evento.type != ALLEGRO_EVENT_KEY_DOWN) {
                 if (evento.keyboard.keycode == ALLEGRO_KEY_RIGHT) pos_x += 10;
@@ -847,6 +938,7 @@ int main() {
                         passou_1 = true;
                         entrou_dir = false;
                         estadoatual = 9;
+                        gears += 1;
                     }
                 }
             }
@@ -857,6 +949,8 @@ int main() {
 
         case 7: //GARAGEM
             al_draw_bitmap(cenarioGaragem, 0, 0, 0);
+            al_draw_bitmap(gearimg, 27, 10, 0);
+            gearscreen(font, gears, 50, 50);
             al_draw_bitmap(fantasma, pos_x, pos_y, 0);
 
             if (evento.type != ALLEGRO_EVENT_KEY_DOWN) {
@@ -918,6 +1012,10 @@ int main() {
             }
             
             break;
+        case 12:
+
+            break;
+
         }
 
 
@@ -948,6 +1046,11 @@ int main() {
     al_destroy_bitmap(cenarioGaragem);
     al_destroy_bitmap(cenarioBar);
     al_destroy_bitmap(cenarioEscritorio);
+    al_destroy_bitmap(botaoplay);
+    al_destroy_bitmap(botaoquit);
+    al_destroy_bitmap(titulogame);
+    al_destroy_bitmap(fundoinicial);
+    al_destroy_bitmap(gearimg);
     al_destroy_timer(timer);
 
 
