@@ -340,7 +340,7 @@ int main() {
 
 
 
-    int estadoatual = 13; // Modificado: Inicializei com 0 em vez de 2 (tela inicial)
+    int estadoatual = 0; // Modificado: Inicializei com 0 em vez de 2 (tela inicial)
     bool jogando = true;
 
     struct Posicao {
@@ -410,7 +410,7 @@ int main() {
         int posicao_inicial_x;
         int posicao_inicial_y;
         switch (estadoatual) {
-       
+
         case 9:
             switch (evento.type) {
                 bool imagem_sendo_arrastada = false;
@@ -426,8 +426,8 @@ int main() {
                         posicao_inicial_x = mouseX;
                         posicao_inicial_y = mouseY;
                         imagem_sendo_arrastada = true;
-            indice_imagem_arrastada = i;
-            break;
+                        indice_imagem_arrastada = i;
+                        break;
 
                     }
                 }
@@ -438,44 +438,44 @@ int main() {
                     for (int i = 4; i < 8; i++) {
                         printf("imagem_arrastada: %p\n", imagem_arrastada);
                         // Verifica se a imagem atual é a que está sendo arrastada
-                            
-                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[7].ax, imagens[0].ay, 20)) {
-                                pontos+=1;
-                                imagem_arrastada->x = imagem_arrastada->ax + 2;
-                                imagem_arrastada->y = imagem_arrastada->ay + 5;
-                                printf("%d", pontos);
-                                break;
-                                
-                            }
-                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[5].ax, imagens[0].ay, 20)) {
-                                pontos+=1;
-                                imagem_arrastada->x = imagens[5].ax + 2;
-                                imagem_arrastada->y = imagens[0].ay + 5;
-                                printf("%d", pontos);
-                                break;
-                                
-                            }
-                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[4].ax, imagens[0].ay, 20)) {
-                                pontos+=1;
-                                imagem_arrastada->x = imagens[4].ax + 2;
-                                imagem_arrastada->y = imagens[0].ay + 5;
-                                printf("%d", pontos);
-                                break;
-                                
-                            }
-                            if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[6].ax, imagens[0].ay, 20)) {
-                                pontos+=1;
-                                imagem_arrastada->x = imagens[6].ax + 2;
-                                imagem_arrastada->y = imagens[0].ay + 5;
-                                printf("%d", pontos);
-                                
-                                
-                            }
-                            if (pontos >= 4) {
-                                pos_x = LARGURA_TELA - 770;
-                                pos_y = ALTURA_TELA - 500;
-                                estadoatual = 6;
-                            }
+
+                        if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[7].ax, imagens[0].ay, 20)) {
+                            pontos += 1;
+                            imagem_arrastada->x = imagem_arrastada->ax + 2;
+                            imagem_arrastada->y = imagem_arrastada->ay + 5;
+                            printf("%d", pontos);
+                            break;
+
+                        }
+                        if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[5].ax, imagens[0].ay, 20)) {
+                            pontos += 1;
+                            imagem_arrastada->x = imagens[5].ax + 2;
+                            imagem_arrastada->y = imagens[0].ay + 5;
+                            printf("%d", pontos);
+                            break;
+
+                        }
+                        if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[4].ax, imagens[0].ay, 20)) {
+                            pontos += 1;
+                            imagem_arrastada->x = imagens[4].ax + 2;
+                            imagem_arrastada->y = imagens[0].ay + 5;
+                            printf("%d", pontos);
+                            break;
+
+                        }
+                        if (verificar_posicao(imagem_arrastada->x, imagem_arrastada->y, imagens[6].ax, imagens[0].ay, 20)) {
+                            pontos += 1;
+                            imagem_arrastada->x = imagens[6].ax + 2;
+                            imagem_arrastada->y = imagens[0].ay + 5;
+                            printf("%d", pontos);
+
+
+                        }
+                        if (pontos >= 4) {
+                            pos_x = LARGURA_TELA - 770;
+                            pos_y = ALTURA_TELA - 500;
+                            estadoatual = 6;
+                        }
 
                     }
 
@@ -611,7 +611,7 @@ int main() {
 
             break;
         case 11:
-            
+
             processar_input(evento);
             desenhar_grid(tela, font);
 
@@ -661,7 +661,7 @@ int main() {
             al_draw_text(font, al_map_rgb(255, 255, 255), 470, 320, 0, "Parabéns por passar no nosso programa");
             al_draw_text(font, al_map_rgb(255, 255, 255), 480, 330, 0, "seja bem vindo a nossa facilidade.");
 
-            if (seg > 10) 
+            if (seg > 10)
                 estadoatual = 3;
 
             break;
@@ -715,7 +715,7 @@ int main() {
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN && evento.keyboard.keycode == ALLEGRO_KEY_E) {
 
                     estadoatual = 12;
-                    
+
                 }
             }
 
@@ -732,14 +732,14 @@ int main() {
             if (pos_y >= 825) pos_y = 625; // -75
             if (pos_y <= -20) pos_y = -20;
 
-            
-           
+
+
             //ENTRA para cima casa  meio
-            if(passou_todos){
+            if (passou_todos) {
                 al_draw_bitmap(seta, LARGURA_TELA - 595, ALTURA_TELA - 710, 0);
                 if (pos_x < LARGURA_TELA - 600 && pos_x > LARGURA_TELA - 650 && pos_y < ALTURA_TELA - 690)
                 {
-                    al_draw_filled_rectangle(LARGURA_TELA - 600, ALTURA_TELA - 670, LARGURA_TELA - 720, ALTURA_TELA - 710,al_map_rgb(0,0,0));
+                    al_draw_filled_rectangle(LARGURA_TELA - 600, ALTURA_TELA - 670, LARGURA_TELA - 720, ALTURA_TELA - 710, al_map_rgb(0, 0, 0));
                     al_draw_text(font, al_map_rgb(255, 255, 255), LARGURA_TELA - 655, ALTURA_TELA - 685, ALLEGRO_ALIGN_CENTRE, "E para entrar");
                     if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
                         if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
@@ -751,7 +751,7 @@ int main() {
                 }
             }
             //ENTRA para cima casa  direita
-            if(!entrou_dir){
+            if (!entrou_dir) {
                 al_draw_bitmap(seta, LARGURA_TELA - 275, ALTURA_TELA - 690, 0);
             }
             if (pos_x < LARGURA_TELA - 270 && pos_x > LARGURA_TELA - 320 && pos_y < ALTURA_TELA - 640 && pos_y > ALTURA_TELA - 680)
@@ -844,14 +844,15 @@ int main() {
                 al_draw_bitmap(seta, LARGURA_TELA - 1000, ALTURA_TELA - 460, 0);
             if (pos_x < LARGURA_TELA - 1000 && pos_x > LARGURA_TELA - 1050 && pos_y > ALTURA_TELA - 450 && pos_y < ALTURA_TELA - 400)
             {
-                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para consertar");
+                al_draw_filled_rectangle(LARGURA_TELA - 1150, ALTURA_TELA - 450, LARGURA_TELA - 1015, ALTURA_TELA - 405, al_map_rgb(0, 0, 0));
+                al_draw_text(font, al_map_rgb(255, 255, 255), LARGURA_TELA - 1080, ALTURA_TELA - 435, ALLEGRO_ALIGN_CENTRE, "E para consertar");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
                     if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
                         pos_x = LARGURA_TELA - 300; pos_y = ALTURA_TELA - 630;
                         passou_todos = true;
                         passou_2 = true;
-                        estadoatual = 10;
+                        estadoatual = 13;
                         gears += 1;
                     }
                 }
@@ -908,7 +909,8 @@ int main() {
                 al_draw_bitmap(seta, LARGURA_TELA - 760, ALTURA_TELA - 560, 0);
             if (pos_x < LARGURA_TELA - 750 && pos_x > LARGURA_TELA - 800 && pos_y > ALTURA_TELA - 550 && pos_y < ALTURA_TELA - 500)
             {
-                al_draw_text(font, al_map_rgb(255, 255, 255), 320, 240, ALLEGRO_ALIGN_CENTRE, "E para resolver");
+                al_draw_filled_rectangle(LARGURA_TELA - 950, ALTURA_TELA - 520, LARGURA_TELA - 815, ALTURA_TELA - 475, al_map_rgb(0, 0, 0));
+                al_draw_text(font, al_map_rgb(255, 255, 255), LARGURA_TELA - 880, ALTURA_TELA - 505, ALLEGRO_ALIGN_CENTRE, "E para consertar");
                 if (evento.type == ALLEGRO_EVENT_KEY_DOWN) {
                     if (evento.keyboard.keycode == ALLEGRO_KEY_E) {
                         al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -966,7 +968,7 @@ int main() {
 
             al_clear_to_color(al_map_rgb(0, 0, 0));
             al_draw_text(font, al_map_rgb(255, 255, 255), 600, 320, ALLEGRO_ALIGN_CENTRE, "Fim! Obrigado por jogar nosso jogo");
-            
+
             if (evento.type == ALLEGRO_EVENT_TIMER)
             {
                 if (evento.timer.source == timer2) {
@@ -988,7 +990,7 @@ int main() {
                 al_draw_text(font, al_map_rgb(255, 255, 255), 600, 320, ALLEGRO_ALIGN_CENTRE, "Menção Honrosa");
                 al_draw_text(font, al_map_rgb(255, 255, 255), 600, 340, ALLEGRO_ALIGN_CENTRE, "Matheus Paixão");
             }
-            
+
             break;
         case 12:
             al_draw_bitmap(cenarioFora, 0, 0, 0);
@@ -1003,18 +1005,18 @@ int main() {
                 al_draw_text(font, al_map_rgb(255, 255, 255), 290, 580, ALLEGRO_ALIGN_LEFT, "Pode me ajudar a recuperar algumas engrenagens?");
                 al_draw_text(font, al_map_rgb(255, 255, 255), 290, 590, ALLEGRO_ALIGN_LEFT, "Estou tentando refazer a Máquina de Turing!");
                 al_draw_text(font, al_map_rgb(255, 255, 255), 500, 640, ALLEGRO_ALIGN_LEFT, "Pressione [ESPAÇO] para continuar");
-                
+
             }
 
             bool tecla_espaco_pressionada;
- 
+
             if (evento.type == ALLEGRO_EVENT_KEY_DOWN && evento.keyboard.keycode == ALLEGRO_KEY_SPACE && !tecla_espaco_pressionada) {
-                dialogojoao++;  
-                tecla_espaco_pressionada = true;  
+                dialogojoao++;
+                tecla_espaco_pressionada = true;
             }
 
             if (evento.type == ALLEGRO_EVENT_KEY_UP && evento.keyboard.keycode == ALLEGRO_KEY_SPACE) {
-                tecla_espaco_pressionada = false;  
+                tecla_espaco_pressionada = false;
             }
 
             if (dialogojoao == 1) {
@@ -1041,7 +1043,7 @@ int main() {
                 al_draw_text(font, al_map_rgb(255, 255, 255), 290, 580, ALLEGRO_ALIGN_LEFT, "Acabei perdendo por aí... Me lembro de ter passado na escola.");
                 al_draw_text(font, al_map_rgb(255, 255, 255), 290, 590, ALLEGRO_ALIGN_LEFT, "Talvez ainda esteja lá. É nessa casa vermelha.");
                 al_draw_text(font, al_map_rgb(255, 255, 255), 500, 640, ALLEGRO_ALIGN_LEFT, "Pressione [ESPAÇO] para continuar");
-               
+
             }
 
             if (dialogojoao == 3) {
@@ -1088,11 +1090,11 @@ int main() {
                 num2 = rand() % 10 + 1;
                 resposta_correta = num1 * num2;
                 tempo_inicial = al_get_time();
-                estadoatual = 14;  
+                estadoatual = 14;
             }
             break;
 
-        case 14: 
+        case 14:
             al_clear_to_color(al_map_rgb(0, 0, 0));
             al_draw_textf(font, al_map_rgb(255, 255, 255), 1280 / 2, 100, ALLEGRO_ALIGN_CENTER,
                 "Rodada: %d", rodada);
@@ -1104,27 +1106,27 @@ int main() {
                 entrada);
             al_flip_display();
 
-                if (evento.type == ALLEGRO_EVENT_KEY_CHAR) {
-                    char c = evento.keyboard.unichar;
-                    if (c >= '0' && c <= '9') { 
-                        entrada[posicao_entrada++] = c;
-                        entrada[posicao_entrada] = '\0';
-                    }
-                    else if (evento.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && posicao_entrada > 0) {
-                        entrada[--posicao_entrada] = '\0';
-                    }
+            if (evento.type == ALLEGRO_EVENT_KEY_CHAR) {
+                char c = evento.keyboard.unichar;
+                if (c >= '0' && c <= '9') {
+                    entrada[posicao_entrada++] = c;
+                    entrada[posicao_entrada] = '\0';
                 }
-            
+                else if (evento.keyboard.keycode == ALLEGRO_KEY_BACKSPACE && posicao_entrada > 0) {
+                    entrada[--posicao_entrada] = '\0';
+                }
+            }
 
-        
+
+
             if (atoi(entrada) == resposta_correta) {
                 pontos++;
                 rodada++;
 
                 if (rodada > 5) {
-                    jogotabudada = false;
+                    jogotabuada = false;
                     gears++;
-                    estadoatual = 15;  
+                    estadoatual = 15;
                 }
                 else {
                     num1 = rand() % 10 + 1;
@@ -1147,8 +1149,8 @@ int main() {
             al_clear_to_color(al_map_rgb(0, 0, 0));
             if (rodada > 5) {
                 al_draw_text(font, al_map_rgb(0, 255, 0), 1280 / 2, 1280 / 2 - 50, ALLEGRO_ALIGN_CENTER,
-                "Você venceu!");
-        
+                    "Você venceu!");
+
             }
             else {
                 al_draw_text(font, al_map_rgb(255, 0, 0), 1280 / 2, 1280 / 2 - 50, ALLEGRO_ALIGN_CENTER,
@@ -1159,13 +1161,11 @@ int main() {
             al_flip_display();
 
             if (evento.type == ALLEGRO_EVENT_KEY_DOWN && evento.keyboard.keycode == ALLEGRO_KEY_ESCAPE) {
-                estadoatual = 6;
+                
+                pos_x = LARGURA_TELA - 1030; pos_y = ALTURA_TELA - 425;
+                estadoatual = 5;
             }
             break;
-
-        case 16:
-
-           
 
         }
 
